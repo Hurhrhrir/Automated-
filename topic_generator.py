@@ -1,7 +1,7 @@
 import requests
 import random
 from bs4 import BeautifulSoup
-from utils import is_duplicate
+from teat import is_duplicate
 
 fallback_topics = [
     "Artificial Intelligence 2025",
