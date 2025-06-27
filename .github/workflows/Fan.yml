@@ -1,4 +1,4 @@
-name: ✍️ Auto Post Articles Every 30 Minutes
+name: author Articles Every 30 Minutes
 
 on:
   schedule:
@@ -28,7 +28,7 @@ jobs:
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
           BLOG_ID: ${{ secrets.BLOG_ID }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python main.py
+        run: python toic.py
 
       - name: 💾 Commit updated posted_articles.json
         run: |
