@@ -13,7 +13,9 @@ fallback_topics = [
     "Best AI Tools This Year",
     "Future of Work in AI Era",
     "Mental Health Awareness Trends",
-    "Clean Energy Innovations"
+    "Clean Energy Innovation" 
+    "paradigm" 
+    "paragarph" 
 ]
 
 def get_bing_trending_topics():
