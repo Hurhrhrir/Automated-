@@ -2,22 +2,22 @@ import os
 import time
 import re
 import urllib.parse
-from utils import is_duplicate, save_posted_title
+from teat import is_duplicate, save_posted_title
 import requests
 from topic_generator import get_trending_topic
-from blogger import post_to_blogger
+from bloer import post_to_blogger
 from meta_generator import generate_meta_description
 
-# إعداد متغيرات البيئة
+# secrets vat 
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 REFRESH_TOKEN = os.getenv("REFRESH_TOKEN")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 BLOG_ID = os.getenv("BLOG_ID") 
 
-# دالة توليد Access Token من Google
+# acess
 def get_access_token():
-    print("🔐 Getting access token from Google...")
+    print("😂 access token from Google...")
     token_url = "https://oauth2.googleapis.com/token"
     payload = {
         "client_id": CLIENT_ID,
@@ -32,7 +32,7 @@ def get_access_token():
         access_token = res.json().get("access_token")
         return access_token
     except Exception as e:
-        print("❌ Error getting access token:", e)
+        print("😡 unsuccessfully getting access token:", e)
         return None
 
 # دالة توليد مقال باستخدام Gemini
@@ -69,8 +69,8 @@ Avoid robotic language, repetition, or markdown. Output plain text only. Around 
         result = response.json()
         return result["candidates"][0]["content"]["parts"][0]["text"].strip()
     except Exception as e:
-        print("❌ Error generating article with Gemini:", e)
-        return "This is a default article content due to an error in generating the article."
+        print("unsucced 😡generating article with Gemini:", e)
+        return "This is a default article content du😡e to an error in generating the article."
         
 def get_image_html(topic: str) -> str:
     safe_topic = re.sub(r"[^\w\s]", "", topic)  # إزالة الرموز مثل % و ’ و –
@@ -100,7 +100,7 @@ def get_image_html(topic: str) -> str:
     '''
 
 def format_article(article: str, title: str) -> str:
-    # 🔧 تنظيف الرموز الغريبة والتنسيقات
+    #formatcleam
     article = re.sub(r"[\u200B-\u200D\uFEFF]", "", article)  # رموز غير مرئية
     article = re.sub(r"#\w+", "", article)  # إزالة الهاشتاقات
     article = re.sub(r"[^\x00-\x7F]+", " ", article)  # إزالة رموز غير ASCII
@@ -118,7 +118,7 @@ def format_article(article: str, title: str) -> str:
     paragraphs = article.split("\n")
     formatted_paragraphs = []
 
-    # تعريف دالة لاختيار العناوين الفرعية
+    # toipucs testing 
     def is_subheading(p: str) -> bool:
         words = p.split()
         if len(words) > 10:
@@ -142,7 +142,7 @@ def format_article(article: str, title: str) -> str:
 
         return score >= 2  # على الأقل شرطين متحققين
 
-    # تنسيق الفقرات باستخدام دالة is_subheading
+    # form.is_subheading
     for p in paragraphs:
         p = p.strip()
         if not p:
@@ -157,12 +157,12 @@ def format_article(article: str, title: str) -> str:
                 f'<p style="margin:15px 0;line-height:1.8;font-size:17px;color:#333;font-family:Arial,sans-serif;">{p}</p>'
             )
 
-    # 🖼️ إضافة صورة أول المقال
+    # add 1 photo or image
     image_html = get_image_html(title)
     if not title.strip() or len(title.strip()) < 4:
         title = "Path to Grow"
 
-    # 📦 تجميع المقال النهائي
+    # 📦 blogger package
     formatted_article = f'''
     <div style="text-align:center;margin-bottom:20px;">
         {image_html}
@@ -176,13 +176,13 @@ def format_article(article: str, title: str) -> str:
     return formatted_article
 
 
-# الدلة الرئيسية
+# gainmain
 def main():
     topic = get_trending_topic()
     print(f"✍️ توليد مقال عن: {topic}")
     if is_duplicate(topic):
-        print(f"⚠️ المقال '{topic}' تم نشره سابقًا. سيتم تجاهله.")
-        return  # يوقف التنفيذ
+        print(f"💥😜المقال '{topic}' تم نشره سابقًا. سيتم تجاهله.")
+        return  # stops 
     article = generate_article(topic)
     meta_description = generate_meta_description(topic, article)
     formatted_article = format_article(article, topic)
@@ -191,7 +191,7 @@ def main():
         post_to_blogger(BLOG_ID, topic, formatted_article, access_token, meta_description=meta_description)
         save_posted_title(topic)
     else:
-        print("❌ Failed to get access token. Skipping post.")
+        print("😒 Failed to get access token. Skipping post.")
 
 if __name__ == "__main__":
     main()
